@@ -93,18 +93,60 @@ Main aesthetic mappings:
 -   size
 -   alpha (Transparency)
 
+```{r}
+ggplot(data = global_waste_data_kg_year, 
+       mapping = aes(x = gdp, 
+                     y = capita_kg_year,
+                     color = income_id,
+                     shape = income_id)) + 
+  geom_point()
+```
+
+```{r}
+global_waste_data_kg_year |>
+  filter(is.na(capita_kg_year))
+
+global_waste_data_kg_year |>
+  filter(is.na(gdp))
+```
+
 ## Scaling
 
 All functions that adapt the scale start with `scale_` followed by the aesthetic to be adapted, e.g. `x_`, and then followed by the type of variable, e.g. `continouous`. So to adapt a continuous scale on an x-axis, the function to use is: `scale_x_continuous()`
 
 ### Axis scales
 
+```{r}
+ggplot(data = global_waste_data_kg_year, 
+       mapping = aes(x = gdp,
+                     y = capita_kg_year,
+                     color = income_id,
+                     shape = income_id
+       )) +
+  geom_point() +
+  scale_y_continuous(breaks = seq(0, 1400,200), limits =c(0,1400))+
+  scale_x_log10(labels = scales::label_log())
+```
+
+```{r}
+
+```
+
 ### Color scales
 
 -   scale_color_brewer()
 
 ```{r}
-
+library(ggthemes)
+ggplot(data=global_waste_data_kg_year,
+       mapping = aes(x = gdp, 
+                     y = capita_kg_year, 
+                     color = income_id, 
+                     shape = income_id)) +
+  geom_point() + 
+  scale_y_continuous(breaks = seq(0,1400, 200), limits = c(0, 1400)) +
+  scale_x_log10(labels = scales::label_log()) +
+  scale_color_colorblind()
 ```
 
 -   scale_color_manual()
@@ -113,6 +155,15 @@ All functions that adapt the scale start with `scale_` followed by the aesthetic
 
 my_colors <- c("#ED6D37", "#901C6C", "#18A5C5", "#A6CE8F")
 
+ggplot(data=global_waste_data_kg_year,
+       mapping = aes(x = gdp, 
+                     y = capita_kg_year, 
+                     color = income_id, 
+                     shape = income_id)) +
+  geom_point() + 
+  scale_y_continuous(breaks = seq(0,1400, 200), limits = c(0, 1400)) +
+  scale_x_log10(labels = scales::label_log()) +
+  scale_color_manual(values = my_colors)
 
 ```
 
@@ -123,10 +174,9 @@ Aesthetic mappings are typically defined within the `ggplot()` function. Every g
 ```{r}
 ggplot(data = global_waste_data_kg_year,
        mapping = aes(x = gdp, 
-                     y = capita_kg_year,
-                     color = income_id,
-                     shape = income_id)) +
-  geom_point(size = 3, alpha = 3/4) +
+                     y = capita_kg_year
+                     )) +
+  geom_point(size = 3, alpha = 3/4, mapping = aes(color = income_id)) +
   geom_smooth(method = "lm", se = FALSE) +
   
   # https://scales.r-lib.org/reference/label_log.html
