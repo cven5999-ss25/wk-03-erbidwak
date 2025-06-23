@@ -1,7 +1,13 @@
 ---
 title: "Homework Exercise - Data Visualisation"
-format: html
-self-contained: true
+author: "Eric Bidong"
+date: "2025-06-23"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    self-contained: true
 execute:
   echo: true
   warning: false
@@ -22,8 +28,8 @@ editor_options:
 library(gapminder)
 library(ggplot2)
 library(dplyr)
-# library(sf)
-# library(rnaturalearth)
+library(sf)
+library(rnaturalearth)
 ```
 
 # Task 1: Data import
@@ -144,6 +150,18 @@ ggplot(data = gapminder_yr_2007,
 
 5.  What are the data types of the three variables used for aesthetic mappings?
 
+```{r}
+print(class(gapminder_yr_2007$continent))
+```
+
+***Continent is "factor"***
+
+```{r}
+print(class(gapminder_yr_2007$lifeExp))
+```
+
+***lifeExp is "numeric"***
+
 ## Timeseries plot
 
 1.  Add a new code chunk below
@@ -203,6 +221,8 @@ ggplot(data = gapminder_yr_2007,
 
 4.  The plot is identical to the plot created with `geom_col()`. Why? What does the `geom_bar()` function do? Write your text here:
 
+***The geom_bar() creates the barplot of the continent with their occurence in the in the dataset***.
+
 ## Histogram
 
 1.  Add a new code chunk below
@@ -225,12 +245,16 @@ ggplot(data = gapminder_yr_2007,
 ggplot(data = gapminder_yr_2007,
        mapping = aes(x = lifeExp, 
                      fill = continent)) +
-  geom_histogram(col = "grey30", breaks = seq(40, 85, 2.5))
+  geom_histogram(col = "grey30", breaks = seq(40, 85, 1))
 ```
 
 6.  Describe how the `geom_histogram()` function is similar to the `geom_bar()` function.
 
+    ***geom_histogram() also visualizes the data as bar.***
+
 7.  What happens by adding the 'breaks' argument? Play around with the numbers inside of `seq()` to see what changes. Describe what you observe here:
+
+    ***breaks create values on x-axis ranging from 40 to 85 with 2.5 step breaks which correspond to the number of bars.***
 
 ## Scatterplot and faceting
 
@@ -248,6 +272,8 @@ ggplot(data = gapminder_yr_2007,
 4.  Run the code contained in the code chunk and fix any errors
 
 5.  Describe in your own words what the `facet_wrap()` function does
+
+    ***facet_wrap() creates multiple plots for each level of the continent variable***
 
 6.  Adapt the scaling of the size by adding `scale_size(range = c(2, 12))` on the next line
 
@@ -279,6 +305,8 @@ ggplot(data = gapminder_yr_2007,
 
 4.  What is stored in the `country_colors` object? Find out by executing the object in the Console (type it to the Console and hit enter). Do the same again, but with a question mark `?country_colors`
 
+    ***The country_colors object has the list of countries for each continent.***
+
 5.  Render the document and fix any errors
 
 ```{r}
@@ -289,7 +317,7 @@ ggplot(data = gapminder,
                      color = country)) +
   geom_line(lwd = 1, show.legend = FALSE) + 
   facet_wrap(~continent) +
-  # scale_color_manual(values = country_colors) +
+  scale_color_manual(values = country_colors) +
   theme_minimal()
 ```
 
